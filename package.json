@@ -1,6 +1,6 @@
 {
   "name": "legends-cli",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "League of Legends CLI Stats Tool",
   "main": "dist/index.js",
   "bin": {
