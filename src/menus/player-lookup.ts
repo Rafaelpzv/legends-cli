@@ -27,7 +27,6 @@ function parseRiotId(input: string): { gameName: string; tagLine: string } {
 // ─── Matches sub-menu ─────────────────────────────────────────────────────────
 
 async function fetchMatches(client: RiotClient, puuid: string, summonerName: string): Promise<void> {
-  clrscr();
   const { count, filter } = await inquirer.prompt([
     {
       type:    'list',

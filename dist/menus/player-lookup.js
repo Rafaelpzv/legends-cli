@@ -21,7 +21,6 @@ function parseRiotId(input) {
 }
 // ─── Matches sub-menu ─────────────────────────────────────────────────────────
 async function fetchMatches(client, puuid, summonerName) {
-    (0, display_1.clrscr)();
     const { count, filter } = await inquirer_1.default.prompt([
         {
             type: 'list',
