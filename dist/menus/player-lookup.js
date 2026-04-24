@@ -12,36 +12,36 @@ const champions_1 = require("../champions");
 // ─── Parse "GameName#TAG" or just "GameName" ──────────────────────────────────
 function parseRiotId(input) {
     const trimmed = input.trim();
-    if (trimmed.includes('#')) {
-        const [gameName, ...rest] = trimmed.split('#');
-        return { gameName: gameName.trim(), tagLine: rest.join('#').trim() };
+    if (trimmed.includes("#")) {
+        const [gameName, ...rest] = trimmed.split("#");
+        return { gameName: gameName.trim(), tagLine: rest.join("#").trim() };
     }
     // Default tag for BR1
-    return { gameName: trimmed, tagLine: 'BR1' };
+    return { gameName: trimmed, tagLine: "BR1" };
 }
 // ─── Matches sub-menu ─────────────────────────────────────────────────────────
 async function fetchMatches(client, puuid, summonerName) {
     const { count, filter } = await inquirer_1.default.prompt([
         {
-            type: 'list',
-            name: 'count',
-            message: 'Quantas partidas buscar?',
+            type: "list",
+            name: "count",
+            message: "Quantas partidas buscar?",
             choices: [
-                { name: '20 partidas', value: 20 },
-                { name: '30 partidas', value: 30 },
-                { name: '50 partidas', value: 50 },
-                { name: '100 partidas', value: 100 },
+                { name: "20 partidas", value: 20 },
+                { name: "30 partidas", value: 30 },
+                { name: "50 partidas", value: 50 },
+                { name: "100 partidas", value: 100 },
             ],
         },
         {
-            type: 'list',
-            name: 'filter',
-            message: 'Filtrar por tipo de fila:',
+            type: "list",
+            name: "filter",
+            message: "Filtrar por tipo de fila:",
             choices: [
-                { name: '🌐  Todas', value: 'all' },
-                { name: '🏆  Ranked (S/D + Flex)', value: 'ranked' },
-                { name: '⚔️   Normal', value: 'normal' },
-                { name: '❄️   ARAM', value: 'aram' },
+                { name: "🌐  Todas", value: "all" },
+                { name: "🏆  Ranked (S/D + Flex)", value: "ranked" },
+                { name: "⚔️   Normal", value: "normal" },
+                { name: "❄️   ARAM", value: "aram" },
             ],
         },
     ]);
@@ -50,12 +50,12 @@ async function fetchMatches(client, puuid, summonerName) {
     while (true) {
         const spinner = (0, ora_1.default)({
             text: `Buscando partidas de ${summonerName} (${page * PAGE_SIZE + 1}–${(page + 1) * PAGE_SIZE})…`,
-            color: 'cyan',
+            color: "cyan",
         }).start();
         try {
             const matches = await client.getMatches(puuid, PAGE_SIZE, filter, page * PAGE_SIZE);
             if (!matches.length) {
-                spinner.warn('Nenhuma partida encontrada com este filtro.');
+                spinner.warn("Nenhuma partida encontrada com este filtro.");
                 break;
             }
             spinner.succeed(`${matches.length} partidas carregadas (página ${page + 1})`);
@@ -64,21 +64,25 @@ async function fetchMatches(client, puuid, summonerName) {
                 (0, display_1.printMatchSummary)(matches, puuid);
             if (count <= PAGE_SIZE)
                 break;
-            const { action } = await inquirer_1.default.prompt([{
-                    type: 'list',
-                    name: 'action',
-                    message: 'O que deseja fazer?',
+            const { action } = await inquirer_1.default.prompt([
+                {
+                    type: "list",
+                    name: "action",
+                    message: "O que deseja fazer?",
                     choices: [
-                        { name: '▶  Próxima página', value: 'next' },
-                        { name: '◀  Voltar ao menu', value: 'back' },
+                        { name: "▶  Próxima página", value: "next" },
+                        { name: "◀  Voltar ao menu", value: "back" },
                     ],
-                }]);
-            if (action === 'back')
+                },
+            ]);
+            if (action === "back") {
+                (0, display_1.clrscr)();
                 break;
+            }
             page++;
         }
         catch (err) {
-            spinner.fail('Erro ao buscar partidas');
+            spinner.fail("Erro ao buscar partidas");
             if (err instanceof riot_client_1.RiotApiError) {
                 console.error(display_1.c.red(`\n  ✖  ${err.message}\n`));
             }
@@ -88,15 +92,19 @@ async function fetchMatches(client, puuid, summonerName) {
 }
 // ─── Masteries sub-menu ───────────────────────────────────────────────────────
 async function fetchMasteries(client, puuid, summonerName) {
-    const spinner = (0, ora_1.default)({ text: `Buscando maestrias de ${summonerName}…`, color: 'cyan' }).start();
+    const spinner = (0, ora_1.default)({
+        text: `Buscando maestrias de ${summonerName}…`,
+        color: "cyan",
+    }).start();
     try {
         await (0, champions_1.loadChampions)();
         const masteries = await client.getTopMasteries(puuid, 5);
-        spinner.succeed('Maestrias carregadas!');
+        (0, display_1.clrscr)();
+        spinner.succeed("Maestrias carregadas!");
         (0, display_1.printMasteries)(masteries);
     }
     catch (err) {
-        spinner.fail('Erro ao buscar maestrias');
+        spinner.fail("Erro ao buscar maestrias");
         if (err instanceof riot_client_1.RiotApiError) {
             console.error(display_1.c.red(`\n  ✖  ${err.message}\n`));
         }
@@ -104,15 +112,20 @@ async function fetchMasteries(client, puuid, summonerName) {
 }
 // ─── Main menu ────────────────────────────────────────────────────────────────
 async function menuPlayerLookup(client) {
-    const { riotId } = await inquirer_1.default.prompt([{
-            type: 'input',
-            name: 'riotId',
-            message: 'Digite o Riot ID do jogador (ex: PlayerName#BR1):',
-            validate: (v) => v.trim().length > 0 ? true : 'O nome não pode ser vazio.',
-        }]);
+    const { riotId } = await inquirer_1.default.prompt([
+        {
+            type: "input",
+            name: "riotId",
+            message: "Digite o Riot ID do jogador (ex: PlayerName#BR1):",
+            validate: (v) => v.trim().length > 0 ? true : "O nome não pode ser vazio.",
+        },
+    ]);
     const { gameName, tagLine } = parseRiotId(riotId);
     // ── Lookup account ──
-    const spinner = (0, ora_1.default)({ text: `Buscando conta ${gameName}#${tagLine}…`, color: 'cyan' }).start();
+    const spinner = (0, ora_1.default)({
+        text: `Buscando conta ${gameName}#${tagLine}…`,
+        color: "cyan",
+    }).start();
     let puuid;
     let summoner;
     let account;
@@ -120,10 +133,11 @@ async function menuPlayerLookup(client) {
         account = await client.getAccountByRiotId(gameName, tagLine);
         puuid = account.puuid;
         summoner = await client.getSummonerByPuuid(puuid);
+        (0, display_1.clrscr)();
         spinner.succeed(`Jogador encontrado: ${display_1.c.bold(account.gameName)}#${account.tagLine}`);
     }
     catch (err) {
-        spinner.fail('Jogador não encontrado');
+        spinner.fail("Jogador não encontrado");
         if (err instanceof riot_client_1.RiotApiError) {
             console.error(display_1.c.red(`\n  ✖  ${err.message}\n`));
         }
@@ -141,24 +155,27 @@ async function menuPlayerLookup(client) {
     }
     // ── Sub-menu ──
     while (true) {
-        (0, display_1.clrscr)();
-        const { action } = await inquirer_1.default.prompt([{
-                type: 'list',
-                name: 'action',
+        const { action } = await inquirer_1.default.prompt([
+            {
+                type: "list",
+                name: "action",
                 message: `O que deseja ver de ${display_1.c.bold(gameName)}?`,
                 choices: [
-                    { name: '📋  Partidas recentes', value: 'matches' },
-                    { name: '⭐  Top 5 Maestrias', value: 'masteries' },
-                    { name: '🔍  Ambos (Maestrias + Partidas)', value: 'both' },
-                    { name: '↩   Voltar ao menu principal', value: 'back' },
+                    { name: "📋  Partidas recentes", value: "matches" },
+                    { name: "⭐  Top 5 Maestrias", value: "masteries" },
+                    { name: "🔍  Ambos (Maestrias + Partidas)", value: "both" },
+                    { name: "↩   Voltar ao menu principal", value: "back" },
                 ],
-            }]);
-        if (action === 'back')
+            },
+        ]);
+        if (action === "back") {
+            (0, display_1.clrscr)();
             break;
-        if (action === 'masteries' || action === 'both') {
+        }
+        if (action === "masteries" || action === "both") {
             await fetchMasteries(client, puuid, gameName);
         }
-        if (action === 'matches' || action === 'both') {
+        if (action === "matches" || action === "both") {
             await fetchMatches(client, puuid, gameName);
         }
     }

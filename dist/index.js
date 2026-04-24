@@ -156,6 +156,7 @@ async function main() {
                 console.log(display_1.c.green("\n  ✓  Cache limpo com sucesso!\n"));
                 break;
             case "exit":
+                (0, display_1.clrscr)();
                 console.log(display_1.c.dim("\n  Até a próxima, invocador! ⚔\n"));
                 process.exit(0);
         }
@@ -200,6 +201,7 @@ async function runLoop(apiKey, region) {
                 return;
             }
             case "exit":
+                (0, display_1.clrscr)();
                 console.log(display_1.c.dim("\n  Até a próxima, invocador! ⚔\n"));
                 process.exit(0);
         }

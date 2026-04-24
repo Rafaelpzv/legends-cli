@@ -155,6 +155,7 @@ async function main(): Promise<void> {
         break;
 
       case "exit":
+        clrscr();
         console.log(c.dim("\n  Até a próxima, invocador! ⚔\n"));
         process.exit(0);
     }
@@ -206,6 +207,7 @@ async function runLoop(apiKey: string, region: Region): Promise<void> {
         return;
       }
       case "exit":
+        clrscr();
         console.log(c.dim("\n  Até a próxima, invocador! ⚔\n"));
         process.exit(0);
     }
