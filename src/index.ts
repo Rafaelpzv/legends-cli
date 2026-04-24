@@ -4,9 +4,9 @@ import * as os from 'os';
 import * as path from 'path';
 import { exec } from 'child_process';
 
-// ─── Config stored in ~/.lol-cli/.env (works from any directory) ─────────────
+// ─── Config stored in ~/.legends-cli/.env (works from any directory) ─────────────
 
-const CONFIG_DIR  = path.join(os.homedir(), '.lol-cli');
+const CONFIG_DIR  = path.join(os.homedir(), '.legends-cli');
 const CONFIG_FILE = path.join(CONFIG_DIR, '.env');
 
 // Load from home dir config before dotenv defaults
@@ -20,7 +20,7 @@ import { menuTopPlayers } from './menus/top-players';
 import { menuPlayerLookup } from './menus/player-lookup';
 import { REGION_LABELS, Region } from './types';
 
-// ─── Setup command: lol-cli <API_KEY> ────────────────────────────────────────
+// ─── Setup command: legends-cli <API_KEY> ────────────────────────────────────────
 
 const cliArg = process.argv[2]?.trim();
 if (cliArg) {
@@ -28,7 +28,7 @@ if (cliArg) {
   fs.writeFileSync(CONFIG_FILE, `RIOT_API_KEY=${cliArg}\n`, 'utf-8');
   console.log(c.green('\n  ✓  API Key salva com sucesso!'));
   console.log(c.dim(`     Arquivo: ${CONFIG_FILE}`));
-  console.log(c.dim('     Agora rode: ') + c.white('lol-cli\n'));
+  console.log(c.dim('     Agora rode: ') + c.white('legends-cli\n'));
   process.exit(0);
 }
 
@@ -53,7 +53,7 @@ function getApiKey(): string {
     console.log(c.dim('  2. Faça login com sua conta Riot'));
     console.log(c.dim('  3. Copie sua') + c.white(' Development API Key') + c.dim(' no painel'));
     console.log(c.dim('  4. Configure rodando o comando:\n'));
-    console.log('     ' + c.green('lol-cli') + c.white(' RGAPI-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx') + '\n');
+    console.log('     ' + c.green('legends-cli') + c.white(' RGAPI-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx') + '\n');
     console.log(c.dim('  ↗  Abrindo o portal da Riot no navegador...\n'));
     openBrowser('https://developer.riotgames.com');
     process.exit(1);
