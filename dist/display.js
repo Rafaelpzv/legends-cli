@@ -42,7 +42,7 @@ function printBanner() {
     console.log(exports.c.title("║") +
         "          " +
         exports.c.accent("⚔  LEAGUE OF LEGENDS  CLI  STATS  ⚔") +
-        "          " +
+        "             " +
         exports.c.title("║"));
     console.log(exports.c.title("╚══════════════════════════════════════════════════════════╝"));
     console.log(exports.c.dim("  Powered by Riot Games API  •  Use responsibly\n"));

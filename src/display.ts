@@ -43,7 +43,7 @@ export function printBanner(): void {
     c.title("║") +
       "          " +
       c.accent("⚔  LEAGUE OF LEGENDS  CLI  STATS  ⚔") +
-      "          " +
+      "             " +
       c.title("║"),
   );
   console.log(

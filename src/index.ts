@@ -78,6 +78,7 @@ function getApiKey(): string {
 
 async function pickRegion(): Promise<Region> {
   clrscr();
+  printBanner();
   const { region } = await inquirer.prompt([
     {
       type: "list",
@@ -208,6 +209,7 @@ async function runLoop(apiKey: string, region: Region): Promise<void> {
       }
       case "exit":
         clrscr();
+        printBanner();
         console.log(c.dim("\n  Até a próxima, invocador! ⚔\n"));
         process.exit(0);
     }

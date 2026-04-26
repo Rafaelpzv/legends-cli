@@ -97,6 +97,7 @@ function getApiKey() {
 // ─── Region picker ────────────────────────────────────────────────────────────
 async function pickRegion() {
     (0, display_1.clrscr)();
+    (0, display_1.printBanner)();
     const { region } = await inquirer_1.default.prompt([
         {
             type: "list",
@@ -202,6 +203,7 @@ async function runLoop(apiKey, region) {
             }
             case "exit":
                 (0, display_1.clrscr)();
+                (0, display_1.printBanner)();
                 console.log(display_1.c.dim("\n  Até a próxima, invocador! ⚔\n"));
                 process.exit(0);
         }
